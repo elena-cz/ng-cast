@@ -7,7 +7,15 @@ angular.module('video-player')
     this.videos = window.exampleVideoData;
     this.currentVideo = this.videos[0];
     
-    this.searchResults = (query = 'fishing') => {
+    this.query = '';
+    
+    this.nextPageToken = undefined;
+    this.prevPageToken = undefined;
+
+    
+    // Update videos for new search
+    this.searchResults = (query) => {
+      this.query = query;
       youTube.search(query, this.updateVideos);
     };
     
@@ -18,20 +26,38 @@ angular.module('video-player')
 
     };
     
-    
-    this.updateVideos = (videos) => {
-      this.videos = videos;
-      this.currentVideo = videos[0];
+    this.updateVideos = (data) => {
+      this.videos = data.items;
+      this.currentVideo = this.videos[0];
+      this.nextPageToken = data.nextPageToken;
+      this.prevPageToken = data.prevPageToken;
     };
-     
 
+
+    // Get new videos on "Load More" click
+    this.getMoreVideos = (data) => {
+      this.videos = this.videos.concat(data.items);
+      this.nextPageToken = data.nextPageToken;
+      this.prevPageToken = data.prevPageToken;
+    };
+    
+    this.searchNextPage = () => {
+      console.log('load more clicked');
+      youTube.search(this.query, this.getMoreVideos, this.nextPageToken); 
+    };
+    
+     
+     
+    // Change current video when user clicks video entry
     this.selectVideo = (index) => {
       this.currentVideo = this.videos[index];
     };
     
     
+
+    //Initialize with default search results
     this.init = function() {
-      this.searchResults('fishing');
+      this.searchResults('light painting');
     };
     this.init();
   },

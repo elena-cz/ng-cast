@@ -89,3 +89,8 @@ h5 {
   text-align: center;
   padding: 10px;
 }
+
+.loadMore {
+  margin: 0px auto;
+  display: block;
+}
