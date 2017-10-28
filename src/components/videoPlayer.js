@@ -7,7 +7,8 @@ angular.module('video-player')
   },
   
   controller: function() {
-    console.log(this.video);
+    
+    //console.log(this.video);  THIS IS UNDEFINED
     
   
     // Controller did not recognize this.video unless it was inside a function invoked from the HTML
